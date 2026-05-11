@@ -19,7 +19,7 @@ jobs:
       - name: Download novel
         run: |
           cd src
-          python ref_main.py ${{ github.event.inputs.novel_id }}
+          echo "${{ github.event.inputs.novel_id }}" | python ref_main.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
