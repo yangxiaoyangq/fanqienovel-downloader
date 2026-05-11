@@ -1,0 +1,27 @@
+name: 在线下载小说 (仅TXT)
+on:
+  workflow_dispatch:
+    inputs:
+      novel_id:
+        description: '小说ID'
+        required: true
+jobs:
+  download-novel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install requests ebooklib tqdm beautifulsoup4 lxml
+      - name: Download novel
+        run: |
+          cd src
+          python ref_main.py ${{ github.event.inputs.novel_id }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: novel-${{ github.event.inputs.novel_id }}-txt
+          path: src/*.txt
